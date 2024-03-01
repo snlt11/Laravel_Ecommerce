@@ -15,7 +15,7 @@
                   Jobs
                 </a>
                 <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Category</a></li>
+                        <li><a class="dropdown-item" href="{{route('category.index')}}">Category</a></li>
                         <li><a class="dropdown-item" href="#">Product</a></li>
                         <li><a class="dropdown-item" href="#">User Max</a></li>
                 </ul>
