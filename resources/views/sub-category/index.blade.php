@@ -1,11 +1,12 @@
 @extends('layout.base')
 
-@section('title','All Categories')
+@section('title','Sub Categories')
+
 
 @section('content')
-    <h1 class="text-center my-5">All Categories</h1>
+    <h1 class="text-center my-5">Sub Categories</h1>
     <div class="col-md-8 offset-md-2">
-        <a href="{{route('category.create')}}" class="btn btn-primary btn-sm">Create <i class="material-icons">add</i> </a>
+        <a href="{{route('category.subcategory.create',$categories->id)}}" class="btn btn-primary btn-sm">Create <i class="material-icons">add</i> </a>
         <table class="table">
             <thead>
               <tr>
@@ -17,7 +18,7 @@
               </tr>
             </thead>
             <tbody>
-                @foreach ($categories as $category)
+                @foreach ($categories->subcategory as $category)
                     <tr>
                         <th scope="row">{{$category->id}}</th>
                         <td>{{$category->name}}</td>
@@ -26,10 +27,10 @@
                             <a href="{{route('category.subcategory.index',$category->id)}}"><i class="material-icons">visibility</i></a>
                         </td>
                         <td>
-                            <a href="{{route('category.edit',$category->id)}}" class="btn btn-warning btn-sm">
+                            <a href="{{route('subcategory.edit',$category->id)}}" class="btn btn-warning btn-sm">
                                 <i class="material-icons">edit</i>
                             </a>
-                            <x-button :action="route('category.destroy', $category->id)" />
+                            <x-button :action="route('subcategory.destroy', $category->id)" />
                         </td>
                     </tr>
                 @endforeach
