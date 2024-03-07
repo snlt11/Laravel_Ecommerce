@@ -32,7 +32,6 @@ class SubCategoryController extends Controller
     public function store(Request $request, $id)
     {
         $file = $request->file('image');
-        // $imageName = $file->getClientOriginalName();
         $imageName = uniqid() . "_" . $file->getClientOriginalName();
         $file->move(public_path() . '/uploads', $imageName);
 

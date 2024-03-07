@@ -31,7 +31,6 @@ class CategoryController extends Controller
     public function store(CategoryCreateRequest $request)
     {
         $file = $request->file('image');
-        // $imageName = $file->getClientOriginalName();
         $imageName = uniqid() . "_" . $file->getClientOriginalName();
         $file->move(public_path() . '/uploads', $imageName);
 
