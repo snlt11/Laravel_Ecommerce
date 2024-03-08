@@ -17,7 +17,7 @@
                 <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{route('category.index')}}">Category</a></li>
                         <li><a class="dropdown-item" href="{{route('tags.index')}}">Tags</a></li>
-                        <li><a class="dropdown-item" href="#">User Max</a></li>
+                        <li><a class="dropdown-item" href="{{route('products.index')}}">Product</a></li>
                 </ul>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('user.logout')}}">Logout</a>
