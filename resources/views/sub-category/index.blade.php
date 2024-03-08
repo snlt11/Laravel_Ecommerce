@@ -6,14 +6,15 @@
 @section('content')
     <h1 class="text-center my-5">Sub Categories</h1>
     <div class="col-md-8 offset-md-2">
+        <a href="{{url()->previous()}}" class="btn btn-primary btn-sm"><i class="material-icons">arrow_back_ios</i> </a>
         <a href="{{route('category.subcategory.create',$categories->id)}}" class="btn btn-primary btn-sm">Create <i class="material-icons">add</i> </a>
+
         <table class="table">
             <thead>
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Name</th>
                 <th scope="col">Image</th>
-                <th scope="col">Child</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -23,9 +24,6 @@
                         <th scope="row">{{$category->id}}</th>
                         <td>{{$category->name}}</td>
                         <td><img src="{{url('/uploads/'.$category->image)}}" alt="" width="40" height="40"></td>
-                        <td>
-                            <a href="{{route('category.subcategory.index',$category->id)}}"><i class="material-icons">visibility</i></a>
-                        </td>
                         <td>
                             <a href="{{route('subcategory.edit',$category->id)}}" class="btn btn-warning btn-sm">
                                 <i class="material-icons">edit</i>

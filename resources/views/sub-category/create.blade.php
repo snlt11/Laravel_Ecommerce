@@ -10,6 +10,8 @@
             <x-input name="name" require="required" type="text"/>
             <x-input name="image" require="required" type="file"/>
             <button type="submit" class="btn btn-primary btn-sm float-end">Create</button>
+            <a href="{{url()->previous()}}" class="btn btn-warning btn-sm float-end me-2">Cancle</a>
+
         </form>
     </div>
 @endsection

@@ -5,6 +5,7 @@
 @section('content')
     <h1 class="text-center my-5">All Categories</h1>
     <div class="col-md-8 offset-md-2">
+        <a href="{{route('admin.home')}}" class="btn btn-primary btn-sm">Back <i class="material-icons">arrow_back_ios</i> </a>
         <a href="{{route('category.create')}}" class="btn btn-primary btn-sm">Create <i class="material-icons">add</i> </a>
         <table class="table">
             <thead>
