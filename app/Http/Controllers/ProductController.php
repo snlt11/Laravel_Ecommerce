@@ -11,18 +11,14 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $products = Product::all();
         return view('product.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $categories = Category::all();
@@ -32,9 +28,6 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(ProductCreateRequest $request)
     {
         $files = $request->file('images');
@@ -43,6 +36,7 @@ class ProductController extends Controller
         foreach ($files as $file) {
             $imageName = uniqid() . "_" . $file->getClientOriginalName();
             $images .= $imageName . ",";
+            $file->move(public_path() . '/uploads', $imageName);
         }
         $images = rtrim($images, ',');
 
@@ -60,15 +54,11 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
-
     public function show(Product $product)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Product $product)
     {
         $categories = Category::all();
@@ -78,19 +68,52 @@ class ProductController extends Controller
         return view('product.edit', compact('categories', 'subcategories', 'tags', 'product'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Product $product)
     {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+        $validated = $request->validate([
+            'category_id' => 'required',
+            'subcategory_id' => 'required',
+            'tag_id' => 'required',
+            'name' => 'required',
+            'price' => 'required',
+            'colors' => 'required',
+            'sizes' => 'required',
+            'description' => 'required'
+        ]);
+
+        if ($validated) {
+            $product = Product::find($product->id);
+            if ($request->hasFile('images')) {
+
+                $files = $request->file('images');
+                $images = "";
+
+                foreach ($files as $file) {
+                    $imageName = uniqid() . "_" . $file->getClientOriginalName();
+                    $images .= $imageName . ",";
+                    $file->move(public_path() . '/uploads'.$imageName);
+                }
+                $product->images = $images;
+            }
+            $product->category_id = $request->input('category_id');
+            $product->subcategory_id = $request->input('subcategory_id');
+            $product->tag_id = $request->input('tag_id');
+            $product->name = $request->input('name');
+            $product->price = $request->input('price');
+            $product->colors = $request->input('colors');
+            $product->sizes = $request->input('sizes');
+            $product->description = $request->input('description');
+            $product->update();
+            return redirect()->route('products.index');
+        } else {
+            return redirect()->back()->with('errors', 'Update product Failed');
+        }
+    }
     public function destroy(Product $product)
     {
-        //
+        $product = Product::find($product->id);
+        $product->delete();
+        return redirect()->route('products.index');
     }
 }

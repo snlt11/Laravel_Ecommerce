@@ -7,6 +7,7 @@
     <div class="col-md-8 offset-md-2">
         <form action="{{route('products.update',$product->id)}}" method="post" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="_method" value="PATCH" >
             <div class="row">
                 <div class="col-md-6">
                     <x-input name='name' type='text' :value="$product->name" />
@@ -51,7 +52,7 @@
                     <x-textarea name='description' type='text' :value="$product->description" />
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm float-end">Create</button>
+            <button type="submit" class="btn btn-primary btn-sm float-end">Update</button>
 
         </form>
     </div>

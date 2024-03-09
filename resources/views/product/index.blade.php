@@ -24,18 +24,23 @@
                     <tr>
                         <td>{{$product->id}}</td>
                         <td>{{$product->name}}</td>
-                        <td>{{$product->images}}</td>
+                        <td>
+                            @php $images = explode(',', $product->images); @endphp
+                            @foreach ($images as $image)
+                                <img src="{{url('/uploads/'.$image)}}" alt="Photo" width="50" height="50">
+                            @endforeach
+                        </td>
                         <td>{{$product->colors}}</td>
                         <td>{{$product->sizes}}</td>
                         <td>{{$product->price}}</td>
                         <td>
                             @php
-                                echo Str::substr($product->description, 0, 10)
+                                echo Str::substr($product->description, 0, 20)
                             @endphp
                         </td>
                         <td>
-                            <a href="{{route('products.edit',$product->id)}}" class="btn btn-warning"><i class="material-icons">edit</i></a>
-                            <a href="{{route('products.destroy',$product->id)}}" class="btn btn-danger"><i class="material-icons">delete</i></a>
+                            <a href="{{route('products.edit',$product->id)}}" class="btn btn-warning btn-sm"><i class="material-icons">edit</i></a>
+                            <x-button :action="route('products.destroy',$product->id)" />
                         </td>
                     </tr>
                 @endforeach
