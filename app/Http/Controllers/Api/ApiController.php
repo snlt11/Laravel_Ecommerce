@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\SubCategory;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Validation\Validator;
 use Illuminate\Http\Request;
@@ -47,10 +49,10 @@ class ApiController extends Controller
 
     public function categories()
     {
-        $categories = Category::all();
+        $categories = Category::get()->load('subcategory');
         return response()->json([
             'message' => 'All categories',
-            'category' => $categories
+            'categories' => $categories
         ]);
     }
 
@@ -58,10 +60,54 @@ class ApiController extends Controller
     {
         $subcategories = SubCategory::where('category_id', $id)->get();
         return response()->json([
-            'message' => 'All subcategories '.$id,
-            'subcategory' => $subcategories
+            'message' => 'All subcategories ' . $id,
+            'subcategories' => $subcategories
         ]);
     }
+
+    public function tags()
+    {
+        $tags = Tag::all();
+        return response()->json([
+            'message' => 'All tags',
+            'tags' => $tags
+        ]);
+    }
+
+    public function products(Request $request)
+    {
+        $products = Product::simplePaginate(2);
+        return response()->json([
+            'message' => 'All Products',
+            'products' => $products
+        ]);
+    }
+
+    public function getProductByCategoryId(Request $request, $id)
+    {
+        $products = Product::where('category_id', $id)->simplePaginate(2);
+        return response()->json([
+            'message' => 'Paginated Category Product',
+            'products' => $products
+        ]);
+    }
+    public function getProductBySubCategoryId(Request $request, $id)
+    {
+        $products = Product::where('subcategory_id', $id)->simplePaginate(2);
+        return response()->json([
+            'message' => 'Paginated SubCategory Product',
+            'products' => $products
+        ]);
+    }
+    public function getProductByTagId(Request $request, $id)
+    {
+        $products = Product::where('tag_id', $id)->simplePaginate(2);
+        return response()->json([
+            'message' => 'Paginated Tags Product',
+            'products' => $products
+        ]);
+    }
+
 
     public function me()
     {

@@ -33,7 +33,7 @@ class SubCategoryController extends Controller
     {
         $file = $request->file('image');
         $imageName = uniqid() . "_" . $file->getClientOriginalName();
-        $file->move(public_path() . '/uploads/'.$imageName);
+        $file->move(public_path() . '/uploads/' , $imageName);
 
         $category = new SubCategory();
         $category->name = $request->input('name');
@@ -78,7 +78,7 @@ class SubCategoryController extends Controller
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $imageName = uniqid() . "_" . $file->getClientOriginalName();
-                $file->move(public_path() . '/uploads/'.$imageName);
+                $file->move(public_path() . '/uploads/' , $imageName);
                 $category->image = $imageName;
             }
             if ($category->update()) {
