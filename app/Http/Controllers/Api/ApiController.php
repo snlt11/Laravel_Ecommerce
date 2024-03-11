@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\SubCategory;
 use App\Models\Tag;
@@ -13,13 +15,33 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+
     public function login()
     {
         $credentials = request(['email', 'password']);
+
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
+
         return $this->respondWithToken($token);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => 60
+        ]);
+    }
+
+    public function me()
+    {
+        return response()->json([
+            'message' => 'User Information',
+            auth()->user()
+        ]);
     }
 
     public function register(Request $request)
@@ -108,22 +130,51 @@ class ApiController extends Controller
         ]);
     }
 
-
-    public function me()
+    public function setOrder(Request $request)
     {
+        $orders = $request->orders;
+        $orderId = $this->saveOrder($orders);
+
+        foreach ($orders as $productOrder) {
+
+            $product = Product::find($productOrder['id']);
+
+            $orderItem = new OrderItem();
+            $orderItem->order_id = $orderId;
+            $orderItem->user_id = auth()->user()->id;
+            $orderItem->category_id = $product->category_id;
+            $orderItem->subcategory_id = $product->subcategory_id;
+            $orderItem->tag_id = $product->tag_id;
+            $orderItem->name = $product->name;
+            $orderItem->price = $product->price;
+            $orderItem->images = $product->images;
+            $orderItem->color = $product->colors;
+            $orderItem->size = $product->sizes;
+            $orderItem->count = $productOrder['count'];
+            $orderItem->total = $product->price * $productOrder['count'];
+
+            $orderItem->save();
+        }
         return response()->json([
-            'message' => 'User Information',
-            auth()->user()
+            'message' => 'Order Saved Success',
         ]);
     }
 
-    protected function respondWithToken($token)
+    public function saveOrder($orders)
     {
-        return response()->json([
-            'message' => 'Login successful',
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => 60
-        ]);
+        $order = new Order();
+        $total = 0;
+        foreach ($orders as $productOrder) {
+            $product = Product::find($productOrder['id']);
+            $total += $product->price * $order['count'];
+        }
+        $order->user_id = auth()->user()->id;
+        $order->count = count($orders);
+        $order->status = false;
+        $order->total = $total;
+
+        $order->save();
+
+        return $order->id;
     }
 }
