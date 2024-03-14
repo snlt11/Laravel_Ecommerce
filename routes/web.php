@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'login')->name('login');
 
-Route::post('/', [UserController::class, 'login']);
+Route::post('/', [UserController::class, 'login'])->name('user.login');
 Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 
-Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+Route::group(['middleware' => 'AdminMiddleware', 'prefix' => 'admin'], function () {
     Route::get('/', fn () => view('admin.home'))->name('admin.home');
     Route::resource('category', CategoryController::class);
     Route::resource('tags', TagController::class);
@@ -22,4 +22,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::resource('category.subcategory', SubCategoryController::class)->shallow();
     Route::get('/orders', [OrderController::class, 'allOrder'])->name('all.orders');
     Route::get('/orderItem/{id}', [OrderItemController::class, 'orderItemById'])->name('orderItemById');
+    Route::get('/test', [UserController::class, 'test']);
 });
