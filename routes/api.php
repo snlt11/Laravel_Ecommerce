@@ -17,7 +17,9 @@ Route::get('/productByTagId/{id}', [ApiController::class, 'getProductByTagId']);
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('me', [ApiController::class, 'me']);
     Route::post('/order', [ApiController::class, 'setOrder']);
-    
+    Route::get('/myOrder', [ApiController::class, 'myOrder']);
+    Route::get('/myOrderItems/{id}',[ApiController::class,'myOrderItems']);
+
 });
 
 

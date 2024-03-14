@@ -163,18 +163,37 @@ class ApiController extends Controller
     public function saveOrder($orders)
     {
         $order = new Order();
-        $total = 0;
-        foreach ($orders as $productOrder) {
-            $product = Product::find($productOrder['id']);
-            $total += $product->price * $order['count'];
-        }
         $order->user_id = auth()->user()->id;
         $order->count = count($orders);
         $order->status = false;
+
+        $total = 0;
+        foreach ($orders as $productOrder) {
+            $product = Product::find($productOrder['id']);
+            $total += $product->price * $productOrder['count'];
+        }
         $order->total = $total;
 
         $order->save();
 
         return $order->id;
+    }
+
+    public function myOrder(Request $request)
+    {
+        $orders = Order::where('id', auth()->user()->id)->get()->load('orderItems');
+        return response()->json([
+            'message' => 'All Orders',
+            'orders' => $orders
+        ]);
+    }
+
+    public function myOrderItems(Request $request,$id){
+        $ordersItems = OrderItem::where('order_id',$id)->get();
+        return response()->json([
+            'message' => 'My Order Items',
+            'ordersItems' => $ordersItems
+        ]);
+
     }
 }
