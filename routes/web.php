@@ -21,6 +21,7 @@ Route::group(['middleware' => 'AdminMiddleware', 'prefix' => 'admin'], function 
     Route::resource('products', ProductController::class);
     Route::resource('category.subcategory', SubCategoryController::class)->shallow();
     Route::get('/orders', [OrderController::class, 'allOrder'])->name('all.orders');
+    Route::patch('/order/{id}',[OrderController::class,'updateStatus'])->name('changeOrderStatus');
     Route::get('/orderItem/{id}', [OrderItemController::class, 'orderItemById'])->name('orderItemById');
     Route::get('/test', [UserController::class, 'test']);
 });

@@ -27,7 +27,11 @@
                         <td>
                             @php $images = explode(',', $product->images); @endphp
                             @foreach ($images as $image)
-                                <img src="{{url('/uploads/'.$image)}}" alt="Photo" width="50" height="50">
+                                <img src="{{url('/uploads/'.$image)}}" alt="Photo" width="50" height="50"
+                                @php
+                                    $lightBoxImage = url('/uploads/'.$image);
+                                @endphp
+                                onclick="showLightBox('{{$lightBoxImage}}')">
                             @endforeach
                         </td>
                         <td>{{$product->colors}}</td>
@@ -46,6 +50,39 @@
                 @endforeach
             </tbody>
         </table>
+
+
+        <div class="modal" tabindex="-1" id="lightBox">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Product Image</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <img src="" alt="" id="lightBoxImage" width="460" height="400" >
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
 @endsection
+
+@push('script')
+    <script>
+        showLightBox = (image) => {
+            let lightBoxImage = document.querySelector('#lightBoxImage');
+            lightBoxImage.src = image;
+            const myModal = new bootstrap.Modal(document.querySelector('#lightBox'), {
+            keyboard: false
+            })
+            myModal.show();
+        }
+
+    </script>
+@endpush
 
 

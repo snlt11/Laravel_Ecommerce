@@ -12,7 +12,8 @@
                 <th>Name</th>
                 <th>Count</th>
                 <th>Total</th>
-                <th>Action</th>
+                <th>Items</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -23,7 +24,14 @@
                         <td>{{$order->count}}</td>
                         <td>{{$order->total}}</td>
                         <td>
-                            <a href="{{route('orderItemById',$order->id)}}" class="btn btn-info"><i class="material-icons">visibility</i></a>
+                            <a href="{{route('orderItemById',$order->id)}}" class="btn btn-info btn-sm"><i class="material-icons">visibility</i></a>
+                        </td>
+                        <td>
+                            <form action="{{route('changeOrderStatus',$order->id)}}" method="post">
+                                @csrf
+                                <input type="hidden" name="_method" value="PATCH">
+                                <button class="btn {{ $order->status ? 'btn-success' : 'btn-danger' }} btn-sm">{{ $order->status ? 'On' : 'Off' }}</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
