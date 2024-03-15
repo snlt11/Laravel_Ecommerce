@@ -15,23 +15,17 @@ class UserController extends Controller
         $phone = $request->input('phone');
         $password = $request->input('password');
         $user = User::where('phone', $phone)->first();
+
         if ($user) {
             if (Hash::check($password, $user->password)) {
-                Auth::login($user);
-                return redirect()->route('admin.home');
+                auth()->login($user);
+                return redirect()->route('admin.home')->with('info', $request->get('rememberMe') ?? 'off');
             } else {
                 return redirect()->back()->with('error', 'Password is incorrect');
             }
         } else {
             return redirect()->back()->with('error', 'Credentials Error');
         }
-
-        if ($request->rememberMe == 'on') {
-            echo 'Remember me is on';
-        } else {
-            echo 'Remember me is off';
-        }
-        dd($request->all());
     }
     public function logout()
     {
