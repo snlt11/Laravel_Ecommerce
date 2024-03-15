@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [ApiController::class, 'login']);
 Route::post('/register', [ApiController::class, 'register']);
 Route::get('/categories', [ApiController::class, 'categories']);
+Route::get('/allSubcategories',[ApiController::class, 'allSubcategories']);
 Route::get('/subcategories/{id}', [ApiController::class, 'subcategories']);
 Route::get('/tags', [ApiController::class, 'tags']);
 Route::get('/products', [ApiController::class, 'products']);
@@ -19,7 +20,6 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::post('/order', [ApiController::class, 'setOrder']);
     Route::get('/myOrder', [ApiController::class, 'myOrder']);
     Route::get('/myOrderItems/{id}',[ApiController::class,'myOrderItems']);
-
 });
 
 

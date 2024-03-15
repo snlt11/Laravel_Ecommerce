@@ -77,6 +77,14 @@ class ApiController extends Controller
             'categories' => $categories
         ]);
     }
+    public function allSubcategories()
+    {
+        $subcategory = SubCategory::all();
+        return response()->json([
+            'message' => 'All Subcategories',
+            'categories' => $subcategory
+        ]);
+    }
 
     public function subcategories($id)
     {
@@ -188,12 +196,12 @@ class ApiController extends Controller
         ]);
     }
 
-    public function myOrderItems(Request $request,$id){
-        $ordersItems = OrderItem::where('order_id',$id)->get();
+    public function myOrderItems(Request $request, $id)
+    {
+        $ordersItems = OrderItem::where('order_id', $id)->get();
         return response()->json([
             'message' => 'My Order Items',
             'ordersItems' => $ordersItems
         ]);
-
     }
 }
