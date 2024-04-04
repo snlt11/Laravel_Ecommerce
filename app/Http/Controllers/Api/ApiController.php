@@ -73,16 +73,18 @@ class ApiController extends Controller
     {
         $categories = Category::get()->load('subcategory');
         return response()->json([
+            'conditions' => true,
             'message' => 'All categories',
-            'categories' => $categories
+            'data' => $categories,
         ]);
     }
     public function allSubcategories()
     {
         $subcategory = SubCategory::all();
         return response()->json([
+            'conditions' => true,
             'message' => 'All Subcategories',
-            'categories' => $subcategory
+            'data' => $subcategory
         ]);
     }
 
@@ -91,7 +93,17 @@ class ApiController extends Controller
         $subcategories = SubCategory::where('category_id', $id)->get();
         return response()->json([
             'message' => 'All subcategories ' . $id,
-            'subcategories' => $subcategories
+            'data' => $subcategories
+        ]);
+    }
+
+    public function productByTagId($id)
+    {
+        $tagId = Product::where('tag_id', $id)->get();
+        return response()->json([
+            'conditions' => true,
+            'message' => 'Product By Tag Id ' . $id,
+            'data' => $tagId
         ]);
     }
 
@@ -99,8 +111,9 @@ class ApiController extends Controller
     {
         $tags = Tag::all();
         return response()->json([
+            'conditions' => true,
             'message' => 'All tags',
-            'tags' => $tags
+            'data' => $tags
         ]);
     }
 
@@ -109,7 +122,8 @@ class ApiController extends Controller
         $products = Product::simplePaginate(2);
         return response()->json([
             'message' => 'All Products',
-            'products' => $products
+            'data' => $products,
+            'counts' => Product::count(),
         ]);
     }
 
@@ -118,7 +132,7 @@ class ApiController extends Controller
         $products = Product::where('category_id', $id)->simplePaginate(2);
         return response()->json([
             'message' => 'Paginated Category Product',
-            'products' => $products
+            'data' => $products
         ]);
     }
     public function getProductBySubCategoryId(Request $request, $id)
@@ -126,7 +140,7 @@ class ApiController extends Controller
         $products = Product::where('subcategory_id', $id)->simplePaginate(2);
         return response()->json([
             'message' => 'Paginated SubCategory Product',
-            'products' => $products
+            'data' => $products
         ]);
     }
     public function getProductByTagId(Request $request, $id)
@@ -134,7 +148,7 @@ class ApiController extends Controller
         $products = Product::where('tag_id', $id)->simplePaginate(2);
         return response()->json([
             'message' => 'Paginated Tags Product',
-            'products' => $products
+            'data' => $products
         ]);
     }
 
@@ -192,7 +206,7 @@ class ApiController extends Controller
         $orders = Order::where('id', auth()->user()->id)->get()->load('orderItems');
         return response()->json([
             'message' => 'All Orders',
-            'orders' => $orders
+            'data' => $orders
         ]);
     }
 
@@ -201,7 +215,7 @@ class ApiController extends Controller
         $ordersItems = OrderItem::where('order_id', $id)->get();
         return response()->json([
             'message' => 'My Order Items',
-            'ordersItems' => $ordersItems
+            'data' => $ordersItems
         ]);
     }
 }

@@ -9,6 +9,7 @@ Route::get('/categories', [ApiController::class, 'categories']);
 Route::get('/allSubcategories',[ApiController::class, 'allSubcategories']);
 Route::get('/subcategories/{id}', [ApiController::class, 'subcategories']);
 Route::get('/tags', [ApiController::class, 'tags']);
+Route::get('/tag/{id}', [ApiController::class, 'productByTagId']);
 Route::get('/products', [ApiController::class, 'products']);
 Route::get('/productByCategoryId/{id}', [ApiController::class, 'getProductByCategoryId']);
 Route::get('/productBySubCategoryId/{id}', [ApiController::class, 'getProductBySubCategoryId']);
