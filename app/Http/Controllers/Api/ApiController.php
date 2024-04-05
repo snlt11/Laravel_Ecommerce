@@ -21,7 +21,11 @@ class ApiController extends Controller
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+                'error' => 'Unauthorized',
+                'message' => 'User Creation Failed',
+
+            ], 401);
         }
 
         return $this->respondWithToken($token);
@@ -65,6 +69,7 @@ class ApiController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
         return response()->json([
+            'conditions' => true,
             'message' => 'Registration successful'
         ]);
     }
@@ -121,6 +126,7 @@ class ApiController extends Controller
     {
         $products = Product::simplePaginate(2);
         return response()->json([
+            'conditions' => true,
             'message' => 'All Products',
             'data' => $products,
             'counts' => Product::count(),
@@ -131,6 +137,7 @@ class ApiController extends Controller
     {
         $products = Product::where('category_id', $id)->simplePaginate(2);
         return response()->json([
+            'conditions' => true,
             'message' => 'Paginated Category Product',
             'data' => $products
         ]);
@@ -139,6 +146,7 @@ class ApiController extends Controller
     {
         $products = Product::where('subcategory_id', $id)->simplePaginate(2);
         return response()->json([
+            'conditions' => true,
             'message' => 'Paginated SubCategory Product',
             'data' => $products
         ]);
@@ -147,6 +155,7 @@ class ApiController extends Controller
     {
         $products = Product::where('tag_id', $id)->simplePaginate(2);
         return response()->json([
+            'conditions' => true,
             'message' => 'Paginated Tags Product',
             'data' => $products
         ]);
