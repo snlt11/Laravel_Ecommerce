@@ -187,6 +187,7 @@ class ApiController extends Controller
             $orderItem->save();
         }
         return response()->json([
+            'conditions' => true,
             'message' => 'Order Saved Success',
         ]);
     }
@@ -214,6 +215,7 @@ class ApiController extends Controller
     {
         $orders = Order::where('id', auth()->user()->id)->get()->load('orderItems');
         return response()->json([
+            'conditions' => true,
             'message' => 'All Orders',
             'data' => $orders
         ]);
@@ -223,6 +225,7 @@ class ApiController extends Controller
     {
         $ordersItems = OrderItem::where('order_id', $id)->get();
         return response()->json([
+            'conditions' => true,
             'message' => 'My Order Items',
             'data' => $ordersItems
         ]);
